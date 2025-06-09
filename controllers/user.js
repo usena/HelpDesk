@@ -77,10 +77,10 @@ export const signUp = async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,
-            secure: isProduction,           // <-- secure only in production
-            sameSite: isProduction ? 'none' : 'lax',  // <-- 'none' in prod, 'lax' for localhost
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-            domain: isProduction ? '.your-backend-domain.com' : undefined  // <-- keep your domain here
+            secure: true, // Required for HTTPS
+            sameSite: 'none', // Required for cross-site cookies
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined // Critical for Render
         });
 
         const mailOptions = {
@@ -126,10 +126,10 @@ export const signIn = async (req, res) => {
 
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: isProduction,           // <-- secure only in production
-                sameSite: isProduction ? 'none' : 'lax',  // <-- 'none' in prod, 'lax' for localhost
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-                domain: isProduction ? '.your-backend-domain.com' : undefined  // <-- keep your domain here
+                secure: true, // Required for HTTPS
+                sameSite: 'none', // Required for cross-site cookies
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+                domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined // Critical for Render
             });
 
             res.status(200).json({
