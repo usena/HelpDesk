@@ -77,7 +77,7 @@ export const signUp = async (req, res) => {
             httpOnly:true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 
-            'none' : 'strict',
+            'none' : 'lax',
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
@@ -124,7 +124,7 @@ export const signIn = async (req, res) => {
                 httpOnly:true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 
-                'none' : 'strict',
+                'none' : 'lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
 
@@ -153,7 +153,7 @@ export const logout = async (req, res) => {
             httpOnly:true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 
-            'none' : 'strict',
+            'none' : 'lax',
         })
 
         return res.status(200).json({success: true, message: "Logged Out!"});
@@ -214,7 +214,7 @@ export const verifyEmail = async (req, res) => {
         }
 
         user.isAccountVerified = true;
-        user.verifyOTP = '';
+        user.verifyOtp = '';
         user.verifyOtpExpireAt = 0;
         await user.save();
         return res.json({success: true, message: 'Email verified successfully!'})

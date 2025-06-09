@@ -11,22 +11,32 @@ import ticketRoute from "./routes/ticketRoute.js";
 import userRoute from "./routes/userRoute.js";
 import faqRoutes from "./routes/faqRoutes.js";
 
-const app = express();
 dotenv.config();
+const app = express();
 
 const LOCAL_SERVER_FRONTEND = process.env.LOCAL_SERVER_FRONTEND;
 const DEPLOY_SERVER_FRONTEND = process.env.DEPLOY_SERVER_FRONTEND;
 
-app.use(express.json());
+const allowedOrigins = [LOCAL_SERVER_FRONTEND, DEPLOY_SERVER_FRONTEND];
+
 app.use(cors({
-    origin: [LOCAL_SERVER_FRONTEND, DEPLOY_SERVER_FRONTEND],
-    credentials: true}));
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like Postman or same-origin)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+
 app.use(cookieParser());
+app.use(express.json());
 
 const PORT = process.env.PORT;
 connectDB();
-
-const allowedOrigins = ['']
 
 app.use("/service/ticket", ticketRoute);
 app.use("/service/user", userRoute);
