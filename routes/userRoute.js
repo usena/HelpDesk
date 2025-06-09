@@ -14,7 +14,7 @@ const router = express.Router()
 
 /**
  * @openapi
- * /user-infor:
+ * /userData:
  *   get:
  *     tags:
  *       - User
@@ -29,7 +29,7 @@ const router = express.Router()
  *       '500':
  *         description: Internal server error
  */
-router.get("/user-infor", auth, userInfor)
+router.get("/userData", userAuth, userInfor)
 
 /**
  * @openapi
