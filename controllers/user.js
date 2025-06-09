@@ -73,13 +73,15 @@ export const signUp = async (req, res) => {
 
         const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET, {expiresIn: '7d'});
 
+        const isProduction = process.env.NODE_ENV === 'production';
+
         res.cookie('token', token, {
-            httpOnly:true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 
-            'none' : 'lax',
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
+            httpOnly: true,
+            secure: isProduction,           // <-- secure only in production
+            sameSite: isProduction ? 'none' : 'lax',  // <-- 'none' in prod, 'lax' for localhost
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            domain: isProduction ? '.your-backend-domain.com' : undefined  // <-- keep your domain here
+        });
 
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
@@ -120,12 +122,14 @@ export const signIn = async (req, res) => {
 
             const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {expiresIn: '7d'});
 
+            const isProduction = process.env.NODE_ENV === 'production';
+
             res.cookie('token', token, {
                 httpOnly: true,
-                secure: true, // Force HTTPS-only in production
-                sameSite: 'none', // Required for cross-site cookies (frontend/backend on different domains)
-                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-                domain: process.env.NODE_ENV === 'production' ? '.your-backend-domain.com' : undefined // Replace with your domain (e.g., '.api.example.com')
+                secure: isProduction,           // <-- secure only in production
+                sameSite: isProduction ? 'none' : 'lax',  // <-- 'none' in prod, 'lax' for localhost
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                domain: isProduction ? '.your-backend-domain.com' : undefined  // <-- keep your domain here
             });
 
             res.status(200).json({
