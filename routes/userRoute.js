@@ -299,6 +299,6 @@ router.post("/verify-account", userAuth, verifyEmail);
  *       '500':
  *         description: Internal server error
  */
-router.post("/is-auth", userAuth, isAuthenticated);
+router.get("/is-auth", userAuth, isAuthenticated);
 
 export default router

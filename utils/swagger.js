@@ -83,6 +83,10 @@ const swaggerSpec = swaggerJsDoc({
             {
                 url: `${VITE_API_URL}/service/faq`,
                 description: 'Development - faq'
+            },
+            {
+                url: `${VITE_API_URL}/service/user`,
+                description: 'Development - user'
             }
         ],
         security: [
