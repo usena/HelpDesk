@@ -1,4 +1,4 @@
-const userAuth = async (req, res, next) => {
+export const userAuth = async (req, res, next) => {
     try {
         const token = req.cookies.token; // Make sure the cookie name matches ('token')
         if (!token) {
